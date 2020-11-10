@@ -34,19 +34,18 @@ private:
 };
 
 
-bool open_cmdline_file(int argc, const char* argv[], std::fstream& ifs) {
-  if (argc != 2) {
-    std::cerr << "Usage: ./sqb filename\n";
+std::ifstream open_cmdline_file(int argc, const char* argv[], size_t args_desired, const std::string& usage_msg, bool exact_args=true) {
+  if (argc < args_desired || (exact_args && argc != args_desired)) {
+    std::cerr << usage_msg;
     exit(ARGC_ERROR);
   }
   std::string filename = argv[1];
-
-  ifs.open(filename);
+  std::ifstream ifs(filename);
   if (!ifs.is_open()) {
     std::cerr << "Could not open: '" << filename << "'\n";
     exit(FILENAME_ERROR);
   }
-  return true;
+  return ifs;
 }
 
 
@@ -99,6 +98,21 @@ template <typename T>
 void print(const std::string& msg, T* arr, size_t n) { print(msg, arr, 0, n - 1); }
 
 
+char* strconvert(char* s, int (*fp)(int)) {
+  char* p = s;
+  while (*p != '\0') { *p = fp(*p);  ++p; }
+  return s;
+}
+
+char* strstrip(char* s) {
+  char* p = s;
+  while (*p != '\0') {
+    if (isalnum(*p) && !ispunct(*p)) { *s++ = *p++; }
+    else { ++p; }
+  }
+  *s = '\0';
+  return s;
+}
 //==========================================================================
 // sorting utilities
 //==========================================================================
@@ -110,7 +124,9 @@ struct comparator {
 
 template <typename T>
 struct fwd_comparator : public comparator<T> {
-  virtual bool operator()(const T& v, const T& w) const override { return v < w; }
+  virtual bool operator()(const T& v, const T& w) const override {
+    return v < w;
+  }
 };
 
 template <typename T>
@@ -139,7 +155,10 @@ template <typename T>
 bool less(T& v, T& w) { return v < w; }
 
 template <typename T>
-bool less(T& v, T& w, const comparator<T>& comp) { return comp(v, w); }
+bool less(T& v, T& w, const comparator<T>& comp) {
+  bool value = comp(v, w);
+  return value;
+}
 //  std::cout << "in less..., v is: " << v << ", w is: " << w << "\n";
 //  bool comparison = comp(v, w);
 //  return comparison;

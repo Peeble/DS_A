@@ -17,12 +17,6 @@
 #include "merge_sort.h"
 #include "quick_sort.h"
 #include "heap_sort.h"
-#include "max_pq_heap.h"
-#include "fibonacci.h"
-#include "factorial.h"
-#include "unitsquare.h"
-//#include "bst.h"
-#include "queue.h"
 
 #include "random.h"
 //#include "students.h"
@@ -81,7 +75,7 @@ void test_sorting_utilities() {
 
   
   single_issorted_test(test1, std::size(test1));                // NB: C++17 +
-  single_issorted_test(test2, std::size(test2));     // sizeof(test2)/sizeof(int)
+  single_issorted_test(test2, std::size(test2));
   single_issorted_test(test3, std::size(test3));
   std::cout << "\n";
   single_issorted_test(test_str1, std::size(test_str1));
@@ -126,9 +120,9 @@ void test_sort_from_file(const std::string& msg, const std::string& filename,
     if (s != " ") { words[n++] = s; }
   }
   ifs.close();
-  test_sort("\n-----------------------------------------------------------\nAfter " + msg + " sorting, words is now: \n\n", words, n, comp, sort);
+  test_sort("\n\nAfter " + msg + " sorting, words is now: \n\n", words, n, comp, sort);
 
-  std::cout << "\n";
+  std::cout << "\n\n";
 }
 
 void test_elementary_sorts(const std::string& filename) {
@@ -199,118 +193,67 @@ struct student_ex {
 
 //------------------------------------------------------------------------------
 int main(int argc, const char * argv[]) {
-//  test_elementary_sorts("words3.txt");
+  //test_elementary_sorts("words3.txt");
 //  test_shuffle();
 
-//  test_sort_from_file<std::string>("merge", "words3.txt", merge_sort<std::string>());
-//
-//  test_sort_from_file("merge_bottom_up -- reversed", "words3.txt",  merge_bu_sort<std::string>(), rev_comparator<std::string>());
-//
-//
-//  test_sort_from_file<std::string>("merge_bottom_up", "words3.txt",  merge_bu_sort<std::string>());
+  test_sort_from_file<std::string>("merge", "words3.txt", merge_sort<std::string>());
 
-//  std::function<bool(const student_ex& a, const student_ex& b)> gpa_then_age = [](const student_ex& a,
-//                                                                            const student_ex& b) {
-//      return (a.gpa_ > b.gpa_) ||
-//             (a.gpa_ == b.gpa_ && a.lname_ < b.lname_) ||
-//             (a.gpa_ == b.gpa_ && a.lname_ == b.lname_ && a.fname_ < b.fname_);
-//    };
-//
-//  std::function<bool(const student_ex& a, const student_ex& b)> age_then_gpa_then_name = [](const student_ex& a, const student_ex& b) {
-//      return (a.age_ < b.age_) ||
-//             (a.age_ == b.age_ && a.gpa_ > b.gpa_) ||
-//             (a.age_ == b.age_ && a.gpa_ == b.gpa_ && a.lname_ < b.lname_) ||
-//             (a.age_ == b.age_ && a.gpa_ == b.gpa_ && a.lname_ == b.lname_ && a.fname_ < b.fname_);
-//    };
+  test_sort_from_file("merge_bottom_up -- reversed", "words3.txt",  merge_bu_sort<std::string>(), rev_comparator<std::string>());
 
-//  test_sort_from_file<std::string>("quick_sort", "words3.txt", quick_sort<std::string>());  //, rev_comparator<std::string>());
-//
-//  test_sort_from_file<std::string>("quick_sort_3way", "words3.txt", quick_sort_3way<std::string>());
-//  test_sort_from_file<std::string>("quick_sort_3way -- reversed", "words3.txt", quick_sort_3way<std::string>(),
-//                                   rev_comparator<std::string>());
-//  test_sort_from_file<std::string>("quick_sort_3way", "dutch.txt", quick_sort_3way<std::string>());
-//  test_sort_from_file<std::string>("quick_sort_3way -- reversed", "dutch.txt", quick_sort_3way<std::string>(),
-//                                   rev_comparator<std::string>());
-//
-//  
-//  char a[] = { 'Q', 'U', 'I', 'C', 'K', 'S', 'O', 'R', 'T', 'E', 'X', 'A', 'M', 'P', 'L', 'E' };
-//  quick_sort_3way<char> qsc;
-//  qsc.sort(a, std::size(a));
-//  print("-------------------------------------\nAfter quick_sort_3way sorting, characters is now: \n", a, std::size(a));  std::cout << "\n\n";
-//  qsc.sort(a, std::size(a), rev_comparator<char>());
-//  print("-------------------------------------\nAfter quick_sort_3way sorting -- reversed, characters is now: \n", a, std::size(a));  std::cout << "\n\n";
-
-//  for (char c : a) { std::cout << c << ' '; }
   
+  test_sort_from_file<std::string>("merge_bottom_up", "words3.txt",  merge_bu_sort<std::string>());
+  test_sort_from_file<std::string>("quick_sort", "words3.txt", quick_sort<std::string>());
+  test_sort_from_file<std::string>("quick_sort_3way", "words3.txt", quick_sort_3way<std::string>());
+  
+
+  std::function<bool(const student_ex& a, const student_ex& b)> gpa_then_age = [](const student_ex& a,
+                                                                            const student_ex& b) {
+      return (a.gpa_ > b.gpa_) ||
+             (a.gpa_ == b.gpa_ && a.lname_ < b.lname_) ||
+             (a.gpa_ == b.gpa_ && a.lname_ == b.lname_ && a.fname_ < b.fname_);
+    };
+
+  std::function<bool(const student_ex& a, const student_ex& b)> age_then_gpa_then_name = [](const student_ex& a, const student_ex& b) {
+      return (a.age_ < b.age_) ||
+             (a.age_ == b.age_ && a.gpa_ > b.gpa_) ||
+             (a.age_ == b.age_ && a.gpa_ == b.gpa_ && a.lname_ < b.lname_) ||
+             (a.age_ == b.age_ && a.gpa_ == b.gpa_ && a.lname_ == b.lname_ && a.fname_ < b.fname_);
+    };
+
+  
+  //test_sort_from_file("quick_sort", "words3.txt", quick_sort<std::string>());
+
   //  student::run_tests();
 
-//  test_sort_from_file<std::string>("heap_sort", "sort_example.txt", heap<std::string>());
-//  test_sort_from_file<std::string>("heap_sort -- reversed", "sort_example.txt", heap<std::string>(), rev_comparator<std::string>());
+  test_sort_from_file<std::string>("heap_sort", "words3.txt", heap<std::string>());
 
-//  test_sort_from_file<std::string>("heap_sort", "words3.txt", heap<std::string>());
-//  test_sort_from_file<std::string>("heap_sort -- reversed", "words3.txt", heap<std::string>(),
-//                                   rev_comparator<std::string>());
-  
-  //max_pq_heap<std::string>::test_file("pq.txt");
-  max_pq_heap<std::string>::test_file("long_pq.txt");
-  max_pq_heap<std::string>::test_initializer_list({ "L", "E", "M", "O", "N", "S" });
-  ;
-  
-  // use rev_comparator and max_pq_heap to get sorted output
-  max_pq_heap<std::string> pqheap({ "one", "two", "three", "four", "five", "six", "seven", "eight" }, rev_comparator<std::string>());
-  while (!pqheap.empty()) {
-    std::cout << pqheap.del_max() << " ";
+//  test_sort_from_file("heap_sort", "words3.txt", heap<std::string>());
+
+  std::ifstream ifs("students.txt");
+  if (!ifs.is_open()) { std::cerr << "Could not open students.txt";  exit(1); }
+
+  std::vector<student_ex> v;
+  student_ex st;
+  while (ifs >> st) {
+//    std::cout << st << "\n";
+    v.push_back(st);
   }
-  std::cout << "\n\n";
+  ifs.close();
 
+  for (const student_ex& st : v) { std::cout << st << "\n"; }
+  std::cout << "\n";
   
-//  test_sort_from_file<std::string>("shell_sort", "words3.txt", shell_sort<std::string>());
-//  test_sort_from_file<std::string>("shell_sort -- reversed", "words3.txt", shell_sort<std::string>(),
-//                                   rev_comparator<std::string>());
-
-//  std::ifstream ifs("students.txt");
-//  if (!ifs.is_open()) { std::cerr << "Could not open students.txt";  exit(1); }
-//
-//  std::vector<student_ex> v;
-//  student_ex st;
-//  while (ifs >> st) {
-////    std::cout << st << "\n";
-//    v.push_back(st);
-//  }
-//  ifs.close();
-//
-//  for (const student_ex& st : v) { std::cout << st << "\n"; }
-//  std::cout << "\n";
-//
-//  student_ex students[100];
-//  int i = 0;
-//  for (i = 0; i < v.size(); ++i) {
-//    students[i] = v[i];
-//  }
-//  shell_sort<student_ex> shell_student;
-//  shell_student.sort(students, i, comparator_lambda<student_ex>(age_then_gpa_then_name));
-//  std::cout << "After sorting, students is: ";
-//  for (int j = 0; j < i; ++j) {
-//    std::cout << students[j] << "\n";
-//  }
-  Fibonacci myFib;
-  myFib.output();
-
-  Factorial myFact;
-
-  myFact.output(20);
-
-  UnitSquare mySquare;
-  mySquare.output();
-/*
-  bst<std::string, int> myBST;
-
-  std::string A = "A";
-  int value = 24;
-
-  myBST.put(A, value);
-*/
-
+  student_ex students[100];
+  int i = 0;
+  for (i = 0; i < v.size(); ++i) {
+    students[i] = v[i];
+  }
+  shell_sort<student_ex> shell_student;
+  shell_student.sort(students, i, comparator_lambda<student_ex>(age_then_gpa_then_name));
+  std::cout << "After sorting, students is: ";
+  for (int j = 0; j < i; ++j) {
+    std::cout << students[j] << "\n";
+  }
   
   return 0;
 }

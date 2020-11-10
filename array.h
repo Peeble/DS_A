@@ -14,11 +14,12 @@
 #include "utils.h"
 
 
+#define ARRAY_MIN_CAPACITY 10
 //---------------------------------------------------------
 template <typename T>
 class array_ {
 public:
-  array_() : array_(MIN_CAPACITY_) { }
+  array_() : array_(ARRAY_MIN_CAPACITY) { }
   array_(const size_t capacity) :
   size_(0), capacity_(capacity), data_(new T[capacity_]) { }
   array_(const std::initializer_list<T>& li) : array_() {
@@ -27,7 +28,7 @@ public:
     }
   }
   ~array_() {
-    std::cout << "deleting array_'s data_...\n";
+//    std::cout << "deleting array_'s data_...\n\n";
     delete[] data_;
   }
   array_(const array_& other) : array_() { copy(other); }
@@ -86,23 +87,23 @@ private:
   void resize(size_t capacity) {
     if (size_ > capacity) { throw new std::overflow_error("size_ > new capacity...\n"); }
     
-    std::cout << "resizing from " << capacity_ << " to " << capacity << "\n";
+//    std::cout << "\t(array resizing from " << capacity_ << " to " << capacity << ")\n";
     T* newdata = new T[capacity];
     std::copy(data_, data_ + size_, newdata);
     delete[] data_;
     capacity_ = capacity;
     data_ = newdata;
-    std::cout << "data_ is now...\n" << *this << "\n";
+//    std::cout << "data_ is now...\n" << *this << "\n";
   }
   void check_underflow() {
     if (size_ == 0) { throw new std::underflow_error("Underflow error\n"); }
-    if (size_ < capacity_ / 4 && size_ >= MIN_CAPACITY_) { resize(capacity_ / 2); }
+    if (size_ < capacity_ / 4 && size_ >= ARRAY_MIN_CAPACITY) { resize(capacity_ / 2); }
   }
   void check_overflow() {
     if (size_ >= capacity_) { resize(2 * capacity_); }
   }
   void check_range(size_t i) const {
-    if (i >= capacity_)    { throw new std::underflow_error("underflow error"); }
+    if (i >= capacity_)    { throw new std::overflow_error("overflow error"); }
     if (i > size_) { throw new std::overflow_error("overflow error\n"); }
   }
   void copy(const array_& other) {
@@ -112,16 +113,17 @@ private:
     capacity_ = other.capacity_;
     data_ = new T[capacity_];
     std::copy(data_, data_ + capacity_, other.data_);
+    std::cout << "--------------------------- copy helper called in array\n";
   }
   
-  static const size_t MIN_CAPACITY_;
+//  static const size_t MIN_CAPACITY_;
   size_t size_;
   size_t capacity_;
   T* data_;
 };
-
-template <typename T>
-const size_t array_<T>::MIN_CAPACITY_ = 10;
+//
+//template <typename T>
+//const size_t array_<T>::MIN_CAPACITY_ = 10;
 
 
 

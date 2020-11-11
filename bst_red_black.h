@@ -45,8 +45,8 @@ template <typename Key, typename Value>
 class bst_red_black
 {
 private:
-  bool RED = true;
-  bool BLACK = false;
+  const static bool RED = true;
+  const static bool BLACK = false;
 
 private:
   struct node

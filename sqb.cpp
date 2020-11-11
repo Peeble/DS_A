@@ -362,11 +362,11 @@ int main(int argc, const char * argv[]) {
   
   //bst<std::string, int>::test_bst("tinyST.txt");
   //bst<std::string, int>::test_bst("gettysburg_ST.txt");
-//  bst<std::string, int>::test_bst(argv[1]);
+ // bst<std::string, int>::test_bst(argv[1]);
   
  // bst_red_black<std::string, std::string>::run_tests();
   bst_red_black<std::string, int>::test_bstrb("tinyST.txt");
- // bst_red_black<std::string, int>::test_bstrb("gettysburg_ST.txt");
+  bst_red_black<std::string, int>::test_bstrb("gettysburg_ST.txt");
 
   
 //  btree<std::string, std::string>::run_tests();
